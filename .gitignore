@@ -1,0 +1,7 @@
+*.pem
+*.tfvars
+env/
+.*/
+.terraform*
+terraform*
+.DS_Store
