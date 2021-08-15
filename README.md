@@ -48,6 +48,11 @@ curl --header "Content-Type: application/json" \
   http://<public ip>/api/metrics/period
 ```
 
-The root endpoint will return a html table of the last 100 metrics recorded 
+The root endpoint `http://<public ip>/` will return a html table of the last 100 metrics recorded 
 
+# Flaws and improvements 
 
+* https for the apiserver
+* Remove ssh key. Kept for debug purposes. terraform state file contains the privatekey currently
+* Since the data is timeseries metrics populated every 10 seconds, it is going to grow. Ideally this would be consumed by something like influxdb to aid storage and optimized searching.
+* A metric monitoring system like this should really by implemented using prometheus/grafana or something similar
