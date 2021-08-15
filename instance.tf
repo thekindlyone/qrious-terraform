@@ -18,42 +18,30 @@ resource "aws_instance" "server" {
   # the public SSH key
   key_name = var.key_name
 
+  provisioner "file" {
+    source      = "project/"
+    destination = "/home/ec2-user"
+  }
+
   provisioner "remote-exec" {
     inline = [
-      "mkdir -p /home/${var.INSTANCE_USERNAME}/docker_tail",
-    ]
-  }
-  provisioner "file" {
-    source      = "scripts/1_install.sh"
-    destination = "/home/${var.INSTANCE_USERNAME}/1_install.sh"
-  }
-  provisioner "file" {
-    source      = "scripts/2_run.sh"
-    destination = "/home/${var.INSTANCE_USERNAME}/2_run.sh"
-  }
-  provisioner "file" {
-    source      = "scripts/docker_tail.py"
-    destination = "/home/${var.INSTANCE_USERNAME}/docker_tail/docker_tail.py"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /home/${var.INSTANCE_USERNAME}/1_install.sh",
-      "/home/${var.INSTANCE_USERNAME}/1_install.sh",
-      # "sudo reboot"
+      "chmod +x /home/ec2-user/scripts/1_install.sh",
+      "chmod +x /home/ec2-user/scripts/2_run.sh",
+      "/home/ec2-user/scripts/1_install.sh",
     ]
 
   }
+
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/${var.INSTANCE_USERNAME}/2_run.sh",
-      "/home/${var.INSTANCE_USERNAME}/2_run.sh"
+      "sudo systemctl enable project.service",
+      "sudo systemctl start project.service"
     ]
   }
   connection {
-    user        = var.INSTANCE_USERNAME
+    user        = "ec2-user"
     private_key = file("${var.key_name}.pem")
     host        = self.public_ip
   }
-  # user_data = "${file("script.sh")}"
 
 }

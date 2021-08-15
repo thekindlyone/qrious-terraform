@@ -5,10 +5,6 @@ variable "AWS_REGION" {
 }
 
 
-variable "INSTANCE_USERNAME" {
-  default = "ec2-user"
-}
-
 variable "key_name" {
   type    = string
   default = "ec2_ssh_key"
