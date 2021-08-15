@@ -14,34 +14,10 @@ resource "aws_instance" "server" {
   # the VPC subnet
   subnet_id = aws_subnet.main-public-1.id
   # the security group
-  vpc_security_group_ids = ["${aws_security_group.allow-ssh.id}"]
+  vpc_security_group_ids = ["${aws_security_group.allow-ssh-http.id}"]
   # the public SSH key
   key_name = var.key_name
 
-  provisioner "file" {
-    source      = "project/"
-    destination = "/home/ec2-user"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /home/ec2-user/scripts/1_install.sh",
-      "chmod +x /home/ec2-user/scripts/2_run.sh",
-      "/home/ec2-user/scripts/1_install.sh",
-    ]
-
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo systemctl enable project.service",
-      "sudo systemctl start project.service"
-    ]
-  }
-  connection {
-    user        = "ec2-user"
-    private_key = file("${var.key_name}.pem")
-    host        = self.public_ip
-  }
+  user_data = file("start.sh")
 
 }

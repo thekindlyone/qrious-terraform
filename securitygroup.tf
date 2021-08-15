@@ -1,4 +1,4 @@
-resource "aws_security_group" "allow-ssh" {
+resource "aws_security_group" "allow-ssh-http" {
   vpc_id      = aws_vpc.main.id
   name        = "allow-ssh"
   description = "security group that allows ssh and all egress traffic"
@@ -16,7 +16,6 @@ resource "aws_security_group" "allow-ssh" {
   }
 
   ingress {
-
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
