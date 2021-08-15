@@ -5,12 +5,12 @@ output "ssh_command" {
 
 output "api_url" {
   description = "api url"
-  value       = "http://${aws_instance.server.public_ip}/api"
+  value       = "http://${aws_instance.server.public_ip}/api/metrics/period"
 }
 
 
 output "root_url" {
-  description = "api url"
+  description = "root url"
   value       = "http://${aws_instance.server.public_ip}"
 }
 
