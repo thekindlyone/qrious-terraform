@@ -18,6 +18,7 @@ This terraform repo provisions an EC2 t2.micro instance in a custom VPC
 
 # Application
 
+Source: https://github.com/thekindlyone/qrious-project
 The application consists of a docker-compose of 
 * flask api server
 * nginx 
@@ -26,7 +27,7 @@ and a script docker_tail.py to generate the docker log file
 
 The install script invoked by user_data
 * installs packages like iptables and docker
-* sets firewall rules to disallow all incoming traffic other than 22 and 80
+* sets firewall rules to disallow all incoming traffic other than 22 and 80(even though security group already enforces this)
 * installs a systemd service for the project and enables it
 
 The systemd service
@@ -40,6 +41,18 @@ The systemd service
 ```bash
 terraform apply
 ```
+Variables can be input via stdin, cli options or via `tfvars` file. 
+
+Example `tfvars` :
+
+```
+AWS_REGION     = "us-west-1"
+AWS_ACCESS_KEY = "xxxxxxxxxx"
+AWS_SECRET_KEY = "xxxxxxxxxx"
+```
+
+
+
 After it is ready
 ```bash
 curl --header "Content-Type: application/json" \
